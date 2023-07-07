@@ -335,6 +335,7 @@ class Plugin extends PluginBase
                 if(!$image) return;
                 $image=trim(str_replace(' /', '', ' '.$image));
                 $image=str_replace('%20', ' ', $image);
+                if(!file_exists($image)) return;
                 $image=getimagesize($image);
                 $height=$image[1];
                 if(!isset($image[0]) || !isset($image[1])) return;
@@ -345,6 +346,7 @@ class Plugin extends PluginBase
                 if(!$image) return;
                 $image=trim(str_replace(' /', '', ' '.$image));
                 $image=str_replace('%20', ' ', $image);
+                if(!file_exists($image)) return;
                 $image=getimagesize($image);
                 if(!isset($image[0]) || !isset($image[1])) return;
                 $width=$image[0];
@@ -712,8 +714,11 @@ class Plugin extends PluginBase
                     if(isset($settings->enabled_phones_numbers) && !$settings->enabled_phones_numbers) $widget->removeField('numbers');
                 }elseif($widget->model instanceof \Diveramkt\Miscelanious\Models\Testmonial) {
                     $settings=Functions::getSettings();
-                    if(!$settings->enabled_video_testimonials){
-                       $widget->removeField('video');
+                   //  if(!$settings->enabled_video_testimonials){
+                   //     $widget->removeField('video');
+                   //     $widget->removeField('type');
+                   // }
+                   if(!is_array($settings->enabled_types_testimonials) || !count($settings->enabled_types_testimonials)){
                        $widget->removeField('type');
                    }
                    if(!$settings->enabled_testimonials_business) $widget->removeField('business');
